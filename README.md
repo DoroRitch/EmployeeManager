@@ -1,0 +1,2 @@
+# EmployeeManager
+インター・ラボ株式会社に入社して初めて制作したSpringBootプロジェクトです。
