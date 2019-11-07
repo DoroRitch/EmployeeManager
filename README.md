@@ -9,7 +9,8 @@
 # 構成
   javaファイルはEmployeeManager/src/main/java/com/employeemanage/  
   htmlファイルはEmployeeManager/src/main/resources/templates/  
-  にあります
+  にあります  
+  /static/imgの中の画像はサンプルとして用いたものです。  
 
 # 環境  
   OS:Windows 10  
