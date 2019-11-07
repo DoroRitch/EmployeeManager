@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text = "|${detailData.name} / EmployeeManage|" >
+	Employee detail / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>従業員詳細ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Employee_List">Employee List</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Employee Detail</li>
+		</ol>
+	</nav>
+
+	<a class = "btn btn-primary" role = "button" href = "/Employee_Update"
+		th:href = "@{/Employee_Update (id = ${detailData.id})}">詳細情報の編集</a>
+	<a class = "btn btn-primary" role = "button" href = "/EmpLang"
+		th:href = "@{/EmpLang (id = ${detailData.id})}">習得技能の編集</a>
+	<a class = "btn btn-primary" role = "button" href = "/EmpProd"
+		th:href = "@{/EmpProd (id = ${detailData.id})}">過去実績の編集</a>
+
+	<table class = "table table-bordered">
+		<div th:object = "${detailData}">
+			<tr>
+				<th class = "text-center">名前</th>
+				<td th:text = "*{name}">name</td>
+			</tr>
+			<tr>
+				<th class = "text-center">役職</th>
+				<td th:text = "*{position}?: 'なし'">position</td>
+			</tr>
+			<tr>
+				<th class = "text-center">所属部署</th>
+				<td th:text = "*{department}?: 'なし'">department</td>
+			</tr>
+			<tr>
+				<th class = "text-center">電話番号</th>
+				<td th:text = "*{phoneNumber}">phoneNumber</td>
+			</tr>
+			<tr>
+				<th class = "text-center">住所</th>
+				<td th:text = "*{address}">address</td>
+			</tr>
+			<tr>
+				<th class = "text-center">派遣先企業</th>
+				<div th:if = "${residentCheck}">
+					<td><a href = "/Company_detail"
+					th:href = "@{/Company_detail (id = ${residentCompany.id})}"
+						th:text = "${residentCompany.name}">resident</a></td>
+				</div>
+				<div th:unless = "${residentCheck}">
+					<td th:text = "${companyData}">resident</td>
+				</div>
+			</tr>
+			<tr>
+				<th class = "text-center">習得技能</th>
+				<td th:text = "${languageList}">skill</td>
+			</tr>
+			<tr>
+				<th class = "text-center align-middle">過去実績</th>
+				<td>
+					<div th:each = "product : ${productList}" th:object = "${product}" class = "list-group">
+						<a href = "/Product_detail"
+							th:href = "@{/Product_detail (id = *{id})}"
+							th:text = "*{name}" class = "list-group-item list-group-item-action">
+							product
+						</a>
+					</div>
+				</td>
+			</tr>
+		</div>
+	</table>
+	</div>
+</body>
+</html>

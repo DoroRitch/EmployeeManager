@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Company-Product Custom / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>企業関与実績ページ</h1>
+
+	<nav aria-label = "breacrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_List">Company List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_detail"
+							th:href = "@{/Company_detail (id = ${comId})}">Company Detail</a></li>
+			<li class ="breadcrumb-item active" aria-current = "page">Company Product</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/CoProd">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr class = "text-center">
+				<th class = "align-middle">実績</th>
+				<td class = "align-middle">
+					<select name = "prodId" class = "form-control">
+						<option th:each = "product : ${dataList}"
+							th:object = "${product}" th:value = *{id}>[[*{name}]]</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<input type = "hidden" name = "comId" th:value = ${comId}>
+		<input type = "submit" value = "登録" class = "btn btn-primary">
+		</div>
+	</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Company Add / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>企業登録ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_List">Company List</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">New Company</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "Company_Add" th:object = "${company}">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr>
+				<th class = "text-center"><label for = "name">名前</label></th>
+				<td>
+					<input type = "text" name = "name" class = "form-control">
+					<div th:if = "${#fields.hasErrors('name')}" th:errors = "*{name}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "address">所在地</label></th>
+				<td>
+					<input type = "text" name = "address" class = "form-control">
+					<div th:if = "${#fields.hasErrors('address')}" th:errors = "*{address}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "phoneNumber">電話番号</label></th>
+				<td>
+					<input type = "text" name = "phoneNumber" class = "form-control">
+					<div th:if = "${#fields.hasErrors('phoneNumber')}" th:errors = "*{phoneNumber}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "url">URL</label></th>
+				<td>
+					<input type = "text" name = "url" class = "form-control">
+					<div th:if = "${#fields.hasErrors('url')}" th:errors = "*{url}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+		</table>
+		<input type = "submit" value = "登録" class = "btn btn-primary">
+		</div>
+	</form>
+</div>
+</body>
+</html>

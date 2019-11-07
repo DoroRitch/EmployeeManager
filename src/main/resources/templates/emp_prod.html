@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Employee-Product Custom / EmpployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>従業員関与実績編集ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Employee_List">Employee List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Employee_detail"
+							th:href = "@{/Employee_detail (id = ${empId})}">Employee Detail</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Employee Product</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/EmpProd">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr class = "text-center">
+				<th class = "align-middle">実績</th>
+				<th>使用した技術
+				<br>(Crtlかshift押して複数選択可)</th>
+				<th class = "align-middle">業務形態</th>
+			</tr>
+			<tr>
+				<td class = "align-middle">
+					<select name = "prodId" class = "form-control">
+						<option th:each = "product : ${dataList}"
+						th:object = "${product}" th:value = *{id}>[[*{name}]]</option>
+					</select>
+				</td>
+				<td class = "align-middle">
+					<select name = "skillId" size = "4" multiple class = "form-control">
+						<option th:each = "skill : ${langList}" th:object = "${skill}"
+						th:value = *{id}>[[*{name}]]</option>
+					</select>
+				</td>
+				<td class = "align-middle">
+					<input type = "text" name = "type" class = "form-control">
+				</td>
+			</tr>
+			<input type = "hidden" name = "empId" th:value = ${empId}>
+		</table>
+		<input type = "submit" value = "登録" class = "btn btn-primary">
+		</div>
+	</form>
+	<hr>
+	<p>
+		<button type = "button" class = "btn btn-secondary" data-toggle = "collapse"
+			data-target = "#description" aria-expanded = "false" aria-controls = "description">
+			編集方法
+		</button>
+	</p>
+	<div class = "collapse" id = "description">
+		<div class = "card card-body">
+			<ul>
+				<li>先に紐付けする実績を「<a href = "/Product_List">実績一覧ページ</a>」から新規登録する</li>
+				<li>一度に紐付けできる実績は一つまでです。</li>
+				<li>まず、紐付けする実績を選択し、そこで使用した技術を一つ以上選択する。<br>
+					(技術に関してはCtrlキーかshiftキーを押しながらクリックすることで複数選択できます)</li>
+				<li>最後に業務形態（SE業務, PG業務, テスト業務... などなど）を記入し、「登録」ボタンを押して完了です。</li>
+			</ul>
+		</div>
+	</div>
+</div>
+</body>
+</html>

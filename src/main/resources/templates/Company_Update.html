@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Company Update / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>企業情報編集ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_List">Company List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_detail"
+							th:href = "@{/Company_detail (id = ${detailData.id})}">Company Detail</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Company Update</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/Company_Update">
+	<div class = "form-group">
+		<table th:object = "${detailData}" class = "table table-bordered">
+			<tr>
+				<th class = "text-center"><label for = "name">名前</label></th>
+				<td>
+					<input type = "text" name = "name" th:value = "*{name}" class = "form-control">
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "address">所在地</label></th>
+				<td>
+					<input type = "text" name = "address" th:value = "*{address}" class = "form-control">
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "phoneNumber">電話番号</label></th>
+				<td>
+					<input type = "text" name = "phoneNumber" th:value = "*{phoneNumber}" class = "form-control">
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "url">ホームページURL</label></th>
+				<td>
+					<input type = "text" name = "url" th:value = "*{url}" class = "form-control">
+				</td>
+			</tr>
+			<input type = "hidden" name = "id" th:value = "*{id}">
+		</table>
+		<input type = "submit" value = "更新" class = "btn btn-primary">
+		</div>
+	</form>
+	</div>
+</body>
+</html>

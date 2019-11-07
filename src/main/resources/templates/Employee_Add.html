@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Add Employee / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>従業員の登録</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Employee_List">Employee List</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">New Employee</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/Employee_Add" th:object = "${employee}">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr>
+				<th class = "text-center"><label for = "name">名前</label></th>
+				<td>
+					<input type = "text" name = "name" class = "form-control">
+					<div th:if = "${#fields.hasErrors('name')}" th:errors = "*{name}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "position">役職</label></th>
+				<td>
+					<input type = "text" name = "position" class = "form-control">
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "department">所属部署</label></th>
+				<td>
+					<input type = "text" name = "department" class = "form-control">
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "phoneNumber">電話番号</label></th>
+				<td>
+					<input type = "text" name = "phoneNumber" class = "form-control">
+					<div th:if = "${#fields.hasErrors('phoneNumber')}" th:errors = "*{phoneNumber}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "address">住所</label></th>
+				<td>
+					<input type = "text" name = "address" class = "form-control">
+					<div th:if = "${#fields.hasErrors('address')}" th:errors = "*{address}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "residentId">常駐先企業</label></th>
+				<td>
+					<select name = "residentId" class = "form-control">
+							<option value = 0>本社勤務</option>
+						<div th:each = "company : ${dataList}" th:object = "${company}">
+							<option th:value = *{id}>[[*{name}]]</option>
+						</div>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<input type = "submit" value = "登録" class = "btn btn-primary">
+		</div>
+	</form>
+</div>
+</body>
+</html>

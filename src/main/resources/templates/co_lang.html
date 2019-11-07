@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Company-Language Custom / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>企業利用スキル編集ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_List">Company List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Company_detail"
+							th:href = "@{/Company_detail (id = ${comId})}">Company Detail</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Company Skill</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/CoLang">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr>
+				<td>
+					<div th:each = "skill : ${dataList}" th:object = "${skill}" class = "form-check form-check-inline h5">
+						<input type = "checkbox" name = "langId"
+						th:checked = "${langList.contains(skill.id)}" th:value = *{id} class = "form-check-input">
+						<label class = "form-check-label">[[*{name}]]</label>
+					</div>
+				</td>
+			</tr>
+			<input type = "hidden" name = "comId" th:value = "${comId}">
+		</table>
+		<input type = "submit" value = "登録" class = "btn btn-primary">
+		</div>
+	</form>
+	<p>
+		<button type = "button" class = "btn btn-secondary" data-toggle = "collapse"
+			data-target = "#description" aria-expanded = "false" aria-controls = "description">
+			使い方説明
+		</button>
+	</p>
+	<div class = "collapse" id = "description">
+		<div class = "card card-body">
+			<ul>
+				<li>企業で主に用いられるスキルの左にあるチェックボックスを選択して、「登録」を押してください。</li>
+				<li>既に登録してあるスキルがあれば、最初からチェックボックスが選択されています。</li>
+				<li>スキルを削除するときは、チェックボックスを未選択状態にして「登録」を押してください。</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

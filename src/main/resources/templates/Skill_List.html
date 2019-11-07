@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Skill List / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>スキル一覧ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Skill List</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/Skill_List">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr>
+				<th class = "text-center align-middle">スキル名</th>
+				<td>
+					<input type = "text" name = "name" class = "form-control">
+				</td>
+				<td>
+					<input type = "submit" value = "登録" class = "btn btn-primary">
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>
+
+	<table class = "table table-bordered">
+		<tr>
+			<td>
+				<ul class = "list-inline h3">
+					<li th:each = "obj : ${dataList}" th:object = "${obj}"
+					th:text = "*{name}" class = "list-inline-item badge badge-secondary">Language name</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+</div>
+</body>
+</html>

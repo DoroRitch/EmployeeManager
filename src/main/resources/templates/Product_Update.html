@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Product Update / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>実績情報編集ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Product_List">Product_List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Product_detail"
+							th:href = "@{/Product_detail (id = ${detailData.id})}">Product Detail</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Product Update</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/Product_Update">
+	<div class = "form-group">
+		<table th:object = "${detailData}" class = "table table-bordered">
+			<tr>
+				<th><label for = "name">名前</label></th>
+				<td><input type = "text" name = "name"
+				th:value = "*{name}" class = "form-control"></td>
+			</tr>
+			<tr>
+				<th><label for = "description">説明</label></th>
+				<td>
+					<textarea name = "description" class = "form-control">[[*{description}]]</textarea>
+				</td>
+			</tr>
+		</table>
+		<input type = "hidden" name = "id" th:value = ${prodId}>
+		<input type = "submit" value = "更新" class = "btn btn-primary">
+		</div>
+	</form>
+</div>
+</body>
+</html>

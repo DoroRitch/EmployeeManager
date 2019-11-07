@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Card detail / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+function resizeSmall() {
+	var obj = document.images['photo'];
+	obj.width = 150;
+}
+function resizeBig() {
+	var obj = document.images['photo'];
+	obj.width = 500;
+}
+function resizeMiddle() {
+	var obj = document.images['photo'];
+	obj.width = 300;
+}
+var d = 0;
+function turn(x) {
+	  var e = document.getElementById("photo");
+	  d = d + x;
+	  e.style.transform = "rotate(" + d + "deg)";
+}
+</script>
+</head>
+<body>
+<div class = "container">
+<h1>名刺詳細ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Card_List">Card List</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Card Detail</li>
+		</ol>
+	</nav>
+
+	<a href = "/Card_Update" class = "btn btn-primary" role = "button"
+		th:href = "@{/Card_Update (id = ${detailData.id})}">詳細情報の編集</a>
+	<a href = "Photo_Add" class = "btn btn-primary" role = "button"
+		th:href = "@{Photo_Add (id = ${detailData.id})}">写真の追加</a>
+
+	<table th:object = "${detailData}" class = "table table-bordered" id = "table">
+		<tr class = "text-center">
+			<th  class = "align-middle">写真
+				<div th:if = "${photoCheck}">
+					<div class = "btn-group">
+						<button type = "button" class = "btn btn-secondary" onclick = "turn(90)">⤵</button>
+						<button type = "button" class = "btn btn-secondary" onclick = "turn(-90)">⤴</button>
+				</div>
+				<br>
+				<div class = "btn-group">
+					<button type = "button" class = "btn btn-secondary" onclick = "resizeSmall()">小</button>
+					<button type = "button" class = "btn btn-secondary" onclick = "resizeMiddle()">中</button>
+					<button type = "button" class = "btn btn-secondary" onclick = "resizeBig()">大</button>
+				</div>
+			</th>
+			<div th:if = "${photoCheck}">
+				<td id = "photoSpace">
+					<img th:src = "@{${filePath}}" id = "photo" alt = "名刺画像">
+				</td>
+			</div>
+			<div th:unless = "${photoCheck}">
+				<td class = "text-left">まだ写真が登録されていません。</td>
+			</div>
+		</tr>
+		<tr>
+			<th class = "text-center">名前</th>
+			<td th:text = "*{name}">name</td>
+		</tr>
+		<tr>
+			<th class = "text-center">電話番号</th>
+			<td th:text = "*{phoneNumber}">phoneNumber</td>
+		</tr>
+		<tr>
+			<th class = "text-center">役職</th>
+			<td th:text = "*{position}?: 'なし'">position</td>
+		</tr>
+		<tr>
+			<th class = "text-center">所属部署</th>
+			<td th:text = "*{department}?: 'なし'">department</td>
+		</tr>
+		<tr>
+			<th class = "text-center">企業</th>
+			<td>
+				<a href = "/Company_detail"
+					th:href = "@{/Company_detail (id = ${companyData.id})}"
+						th:text = "${companyData.name}">company
+				</a>
+			</td>
+		</tr>
+	</table>
+	</div>
+</body>
+</html>

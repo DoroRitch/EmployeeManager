@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Card Update / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>名刺情報編集ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Card_List">Card List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Card_detail"
+					th:href = "@{/Card_detail (id = ${detailData.id})}">Card Detail</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Card Update</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "Card_Update">
+	<div class = "form-group">
+		<table th:object = "${detailData}" class = "table table-bordered">
+			<tr>
+				<th class = "text-center"><label for = "name">名前</label></th>
+				<td><input type = "text" name = "name"
+					th:value = "*{name}" class = "form-control"></td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "phoneNumber">電話番号</label></th>
+				<td><input type = "text" name = "phoneNumber"
+					th:value = "*{phoneNumber}" class = "form-control"></td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "position">役職</label></th>
+				<td><input type = "text" name = "position"
+					th:value = "*{position}" class = "form-control"></td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "department">所属部署</label></th>
+				<td><input type = "text" name = "department"
+					th:value = "*{department}" class = "form-control"></td>
+			</tr>
+			<tr>
+				<th class = "text-center"><label for = "company">企業</label></th>
+				<td>
+					<select name = "companyId" class = "form-control">
+						<option th:each = "company : ${dataList}" th:value = ${company.id}
+							th:selected = "${company.id} == *{companyId}">
+							[[${company.name}]]</option>
+					</select>
+				</td>
+			</tr>
+			<input type = "hidden" name = "id" th:value = "*{id}">
+		</table>
+		</div>
+		<input type = "submit" value = "更新" class = "btn btn-primary">
+	</form>
+	</div>
+</body>
+</html>

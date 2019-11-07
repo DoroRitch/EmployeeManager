@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Top page / EmployeeManager</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>Top page</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item active" aria-current = "page">Home</li>
+		</ol>
+	</nav>
+
+	<div class = "list-group">
+		<a href = "/Employee_List" class = "list-group-item list-group-item-action">従業員一覧ページ</a>
+		<a href = "/Card_List" class = "list-group-item list-group-item-action">名刺一覧ページ</a>
+		<a href = "/Company_List" class = "list-group-item list-group-item-action">取引先企業一覧ページ</a>
+		<a href = "/Product_List" class = "list-group-item list-group-item-action">実績一覧ページ</a>
+		<a href = "/Skill_List" class = "list-group-item list-group-item-action">スキル一覧ページ</a>
+	</div>
+</div>
+</body>
+</html>

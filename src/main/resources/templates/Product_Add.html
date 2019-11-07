@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Product Add / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>実績登録ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Product_List">Product List</a>
+			<li class = "breadcrumb-item active" aria-current = "page">New Product</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/Product_Add" th:object = "${product}">
+	<div class = "form-group">
+		<table class = "table table-bordered">
+			<tr>
+				<th><label for = "name">名前</label></th>
+				<td>
+					<input type = "text" name = "name" class = "form-control">
+					<div th:if = "${#fields.hasErrors('name')}" th:errors = "*{name}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+			<tr>
+				<th><label for = "description">説明</label></th>
+				<td>
+					<textarea name = "description"class = "form-control"></textarea>
+					<div th:if = "${#fields.hasErrors('description')}" th:errors = "*{description}"
+						style = "color : red"></div>
+				</td>
+			</tr>
+		</table>
+		<input type = "submit" value = "登録" class = "btn btn-primary">
+		</div>
+	</form>
+</div>
+</body>
+</html>

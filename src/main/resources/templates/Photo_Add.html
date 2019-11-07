@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Photo Add / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>「[[${cardData.name}]]」の名刺写真の追加</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Card_List">Card List</a></li>
+			<li class = "breadcrumb-item"><a href = "/Card_detail"
+									th:href = "@{/Card_detail (id = ${cardData.id})}">Card Detail</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Photo</li>
+		</ol>
+	</nav>
+
+	<form method = "post" action = "/Photo_Add" enctype = "multipart/form-data">
+	<div class = "form-row align-items-center">
+		<div class = "col-auto">
+			<input type = "file" name = "upload_file" class = "form-control-file">
+		</div>
+		<div class = "col-auto">
+			<input type = "hidden" name = "id" th:value = "${cardData.id}">
+		</div>
+		<div class = "col-auto">
+			<input type = "submit" value  = "登録" class = "btn btn-primary">
+		</div>
+	</div>
+	</form>
+	<hr>
+
+	<p>
+		<button type = "button" class = "btn btn-secondary" data-toggle = "collapse"
+			data-target = "#description" aria-expanded = "false" aria-controls = "description">
+			使い方説明
+		</button>
+	</p>
+	<div class = "collapse" id = "description">
+		<div class = "card card-body">
+			<ul>
+				<li>登録する際は、スキャンした画像を以下のサイトで長辺(縦向きであればheight)を300に変更<br>
+				<a href = "https://www.webtoolss.com/resize.html">画像リサイズツール</a></li>
+				<li>画像の名前は「名前(_企業名).拡張子」をキャメルケースで指定すること。<br>
+					(Ex.「株式会社サイバーコネクトツーの”松山洋”」なら「MatsuyamaHiroshi_CyberConnect2.jpg」となる)</li>
+			</ul>
+		</div>
+	</div>
+</div>
+</body>
+</html>

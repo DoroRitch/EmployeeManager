@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Product detail / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>実績詳細ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item"><a href = "/Product_List">Product List</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Product Detail</li>
+		</ol>
+	</nav>
+
+	<a href = "Product_Update" class = "btn btn-primary" role = "button"
+		th:href = "@{/Product_Update (id = ${detailData.id})}">編集</a>
+
+	<table th:object = "${detailData}" class = "table table-bordered" style = "table-layout:fixed;">
+		<tr>
+			<th class = "text-center" style = "width:25%;">名前</th>
+			<td th:text = "*{name}" colspan = "3" class = "col-9">name</td>
+		</tr>
+		<tr>
+			<th class = "text-center">説明</th>
+			<td colspan = "3">
+				<div th:each = "str, stat : *{description.split('\r\n|\r|\n', -1)}"
+				th:text = "${str}">
+				<br th:if = "${!stat.last}">
+				</div>
+			</td>
+		</tr>
+		<tr class = "text-center">
+			<th th:rowspan = "${empList.size() + 1}" class = "align-middle">関連従業員リスト</th>
+			<th>名前</th><th>スキル</th><th>業務形態</th>
+		</tr>
+		<div th:each = "employee : ${empList}">
+			<div th:each = "empprod : ${empProdList}">
+				<div th:if = "${employee.id == empprod.empId}">
+					<tr>
+						<td><a href = "/Employee_detail"
+							th:href = "@{/Employee_detail (id = ${employee.id})}"
+							th:text = "${employee.name}">name</a></td>
+						<td th:text = "${empprod.skill}">skill</td>
+						<td th:text = "${empprod.type}">type</td>
+					</tr>
+				</div>
+			</div>
+		</div>
+		<tr class = "text-center">
+			<th th:rowspan = "${companyList.size() + 1}" class = "align-middle">関連企業リスト</th>
+			<th>名前</th>
+		</tr>
+		<div th:each = "company : ${companyList}" th:object = "${company}">
+			<tr>
+				<td><a href = "/Company_detail"
+				th:href = "@{/Company_detail (id = *{id})}"
+				 th:text = "*{name}">name</a></td>
+			</tr>
+		</div>
+	</table>
+	</div>
+</body>
+</html>

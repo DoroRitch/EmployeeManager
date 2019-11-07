@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Product List / EmployeeManage</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class = "container">
+<h1>実績一覧ページ</h1>
+
+	<nav aria-label = "breadcrumb">
+		<ol class = "breadcrumb">
+			<li class = "breadcrumb-item"><a href = "/">Home</a></li>
+			<li class = "breadcrumb-item active" aria-current = "page">Product List</li>
+		</ol>
+	</nav>
+
+	<a class = "btn btn-primary" role = "button" href = "/Product_Add">新規登録</a>
+
+	<div class = "card">
+		<div class = "card-header">名前</div>
+		<div class = "card-body">
+			<div th:each = "product : ${dataList}" th:object = "${product}" class = "list-group-flush">
+					<a href = "/Product_detail" class = "list-group-item list-group-item-action"
+					th:href = "@{/Product_detail (id = *{id})}"
+					th:text = "*{name}">name</a>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
