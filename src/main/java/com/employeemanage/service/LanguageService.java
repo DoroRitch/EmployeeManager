@@ -40,4 +40,8 @@ public class LanguageService {
 		query.setParameter(1, name);
 		query.executeUpdate();
 	}
+
+	public void save(Language language) {
+		languageRepository.save(language);
+	}
 }

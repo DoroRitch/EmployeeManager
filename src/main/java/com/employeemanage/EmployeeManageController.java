@@ -810,6 +810,7 @@ public class EmployeeManageController {
 
 		if (result.hasErrors()) {
 			mav.setViewName("Company_Update");
+			mav.addObject("company", company);
 			Company companyData = companyService.findById(company.getId()).orElse(null);
 			mav.addObject("detailData", companyData);
 			return mav;
@@ -981,7 +982,7 @@ public class EmployeeManageController {
 	 *
 	 * @VParam cardDataList			Cardテーブルから全件検索した結果のエンティティリスト。
 	 */
-	@GetMapping( "/Card_List")
+	@GetMapping("/Card_List")
 	public ModelAndView showCardList(ModelAndView mav) {
 
 		mav.setViewName("Card_List");
@@ -1145,7 +1146,7 @@ public class EmployeeManageController {
 	 *
 	 * @VParam card					アップロードする写真と紐付ける名刺の情報を持ったインスタンス。
 	 */
-	@GetMapping("Photo_Add")
+	@GetMapping("/Photo_Add")
 	public ModelAndView formToAddPhoto(@RequestParam("id") int id,
 					ModelAndView mav) {
 
@@ -1175,7 +1176,7 @@ public class EmployeeManageController {
 	 * @VParam bytes				OutputStream#writeメソッドでフォルダを保存するためにbyte型に変換したオブジェクト。
 	 *
 	 */
-	@PostMapping("Photo_Add")
+	@PostMapping("/Photo_Add")
 	public ModelAndView addPhoto(
 			@RequestParam("upload_file") MultipartFile file,
 			@RequestParam("id") int id, ModelAndView mav) {
@@ -1378,7 +1379,8 @@ public class EmployeeManageController {
 	 * @VParam languageDataList	Languageテーブルを全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/Skill_List")
-	public ModelAndView showSkillList(ModelAndView mav) {
+	public ModelAndView showSkillList(@ModelAttribute Language language,
+			ModelAndView mav) {
 
 		mav.setViewName("Skill_List");
 
@@ -1400,11 +1402,17 @@ public class EmployeeManageController {
 	 * @VParam	languageDataList	Languageテーブルを全件検索した結果のエンティティリスト。
 	 */
 	@PostMapping("/Skill_List")
-	public ModelAndView addSkill(@RequestParam String name, ModelAndView mav) {
+	public ModelAndView addSkill(@Valid @ModelAttribute Language language,
+			BindingResult result,
+			ModelAndView mav) {
+
+		if (!result.hasErrors()) {
+
+			languageService.save(language);
+		}
 
 		mav.setViewName("Skill_List");
-
-		languageService.save(name);
+		mav.addObject("skill", language);
 
 		List<Language> languageDataList = languageService.findAll();
 		mav.addObject("dataList", languageDataList);
