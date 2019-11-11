@@ -29,24 +29,18 @@
 				<th class = "text-center"><label for = "name">名前</label></th>
 				<td>
 					<input type = "text" name = "name" th:value = "*{name}" class = "form-control">
-					<div th:object = "${company}" th:if = "${#fields.hasErrors('name')}" th:errors = "*{name}"
-						style = "color : red"></div>
 				</td>
 			</tr>
 			<tr>
 				<th class = "text-center"><label for = "address">所在地</label></th>
 				<td>
 					<input type = "text" name = "address" th:value = "*{address}" class = "form-control">
-					<div th:object = "${company}" th:if = "${#fields.hasErrors('address')}" th:errors = "*{address}"
-						style = "color : red"></div>
 				</td>
 			</tr>
 			<tr>
 				<th class = "text-center"><label for = "phoneNumber">電話番号</label></th>
 				<td>
 					<input type = "text" name = "phoneNumber" th:value = "*{phoneNumber}" class = "form-control">
-					<div th:object = "${company}" th:if = "${#fields.hasErrors('phoneNumber')}" th:errors = "*{phoneNumber}"
-						style = "color : red"></div>
 				</td>
 			</tr>
 			<tr>
