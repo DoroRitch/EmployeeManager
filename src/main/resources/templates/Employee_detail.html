@@ -51,7 +51,7 @@
 				<td th:text = "*{address}">address</td>
 			</tr>
 			<tr>
-				<th class = "text-center">派遣先企業</th>
+				<th class = "text-center">常駐先企業</th>
 				<div th:if = "${residentCheck}">
 					<td><a href = "/Company_detail"
 					th:href = "@{/Company_detail (id = ${residentCompany.id})}"
