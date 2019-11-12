@@ -6,7 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+
+import com.employeemanage.valid.Byte;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,6 @@ public class Language {
 	private Integer id;
 
 	@Column(name = "name", nullable = false)
-	@Size(min = 1, max = 50)
+	@Byte(min = 1, max = 50)
 	private String name;
 }

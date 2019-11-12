@@ -1405,13 +1405,17 @@ public class EmployeeManageController {
 			BindingResult result,
 			ModelAndView mav) {
 
-		if (!result.hasErrors()) {
+		if (result.hasErrors()) {
 
-			languageService.save(language);
+			mav.setViewName("Skill_List");
+			List<Language> languageDataList = languageService.findAll();
+			mav.addObject("dataList", languageDataList);
+			return mav;
 		}
 
 		mav.setViewName("Skill_List");
-		mav.addObject("skill", language);
+
+		languageService.save(language);
 
 		List<Language> languageDataList = languageService.findAll();
 		mav.addObject("dataList", languageDataList);

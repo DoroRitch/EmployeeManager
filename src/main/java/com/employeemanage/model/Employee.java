@@ -9,7 +9,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import com.employeemanage.valid.Byte;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,25 +28,25 @@ public class Employee {
 
 	@Column(name = "name")
 	@NotBlank
-	@Size(min = 1, max = 50)
+	@Byte(min = 1, max = 50)
 	private String name;
 
 	@Column(name = "position")
-	@Size(min = 0, max = 50)
+	@Byte(min = 0, max = 50)
 	private String position;
 
 	@Column(name = "department")
-	@Size(min = 0, max = 50)
+	@Byte(min = 0, max = 50)
 	private String department;
 
 	@Column(name = "phone_number")
 	@NotBlank
-	@Size(min = 1, max = 50)
+	@Byte(min = 1, max = 50)
 	private String phoneNumber;
 
 	@Column(name = "address")
 	@NotBlank
-	@Size(min = 1, max = 510)
+	@Byte(min = 1, max = 510)
 	private String address;
 
 	@Column(name = "resident_id")

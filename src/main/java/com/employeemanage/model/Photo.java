@@ -7,9 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.employeemanage.valid.Byte;
+
 import lombok.Getter;
 import lombok.Setter;
-
 @Entity
 @Table(name = "Photo")
 @Getter
@@ -22,5 +23,6 @@ public class Photo {
 	private Integer id;
 
 	@Column(name = "file_name", nullable = false)
+	@Byte(max = 510)
 	private String fileName;
 }

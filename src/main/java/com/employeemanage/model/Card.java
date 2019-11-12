@@ -8,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import com.employeemanage.valid.Byte;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -26,20 +27,20 @@ public class Card {
 
 	@Column(name = "name")
 	@NotBlank
-	@Size(min = 1, max = 50)
+	@Byte(min = 1, max = 50)
 	private String name;
 
 	@Column(name = "phone_number")
 	@NotBlank
-	@Size(min = 1, max = 50)
+	@Byte(min = 1, max = 50)
 	private String phoneNumber;
 
 	@Column(name = "position", nullable = true)
-	@Size(min = 0, max = 50)
+	@Byte(min = 0, max = 50)
 	private String position;
 
 	@Column(name = "department", nullable = true)
-	@Size(min = 0, max = 50)
+	@Byte(min = 0, max = 50)
 	private String department;
 
 	@Column(name = "company_id")
