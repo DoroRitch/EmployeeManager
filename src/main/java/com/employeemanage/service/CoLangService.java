@@ -68,4 +68,12 @@ public class CoLangService {
 			.setParameter(2, langId);
 		query.executeUpdate();
 	}
+
+	public void coDeleteAll(Integer comId) {
+
+		query = entityManager.createNativeQuery("delete from co_lang "
+				+ "where company_id = ?", CoLang.class);
+		query.setParameter(1,  comId);
+		query.executeUpdate();
+	}
 }

@@ -576,7 +576,9 @@ public class EmployeeManageController {
 					empLangService.save(addLang);
 				}
 			}
+		} else {
 
+			empLangService.empDeleteAll(empId);
 		}
 
 		mav.setViewName("Employee_detail");
@@ -909,6 +911,9 @@ public class EmployeeManageController {
 					coLangService.save(addLang);
 				}
 			}
+		} else {
+
+			coLangService.coDeleteAll(comId);
 		}
 
 		companyDetail(comId, mav);

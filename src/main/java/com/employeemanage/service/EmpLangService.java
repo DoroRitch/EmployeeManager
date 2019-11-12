@@ -69,6 +69,13 @@ public class EmpLangService {
 		query.setParameter(1, empId)
 			.setParameter(2, langId);
 		query.executeUpdate();
+	}
 
+	public void empDeleteAll(Integer empId) {
+
+		query = entityManager.createNativeQuery("delete from emp_lang "
+				+ "where employee_id = ?", EmpLang.class);
+		query.setParameter(1, empId);
+		query.executeUpdate();
 	}
 }
