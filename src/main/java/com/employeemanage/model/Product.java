@@ -7,11 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+
+import com.employeemanage.valid.Byte;
 
 import lombok.Getter;
 import lombok.Setter;
-
 @Entity
 @Table(name = "Product")
 @Getter
@@ -25,11 +25,11 @@ public class Product {
 
 	@Column(name = "name")
 	@NotBlank
-	@Size(min = 1, max = 255)
+	@Byte(min = 1, max = 255)
 	private String name;
 
 	@Column(name = "description")
 	@NotBlank
-	@Size(min = 1, max = 500)
+	@Byte(min = 1, max = 500)
 	private String description;
 }
