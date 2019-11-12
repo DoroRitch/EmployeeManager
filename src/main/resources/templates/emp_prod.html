@@ -39,13 +39,13 @@
 					</select>
 				</td>
 				<td class = "align-middle">
-					<select name = "skillId" size = "4" multiple class = "form-control">
+					<select name = "skillId" size = "4" multiple required class = "form-control">
 						<option th:each = "skill : ${langList}" th:object = "${skill}"
 						th:value = *{id}>[[*{name}]]</option>
 					</select>
 				</td>
 				<td class = "align-middle">
-					<input type = "text" name = "type" class = "form-control">
+					<input type = "text" name = "type" required class = "form-control">
 				</td>
 			</tr>
 			<input type = "hidden" name = "empId" th:value = ${empId}>
