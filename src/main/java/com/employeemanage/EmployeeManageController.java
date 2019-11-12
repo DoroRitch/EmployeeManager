@@ -190,7 +190,6 @@ public class EmployeeManageController {
 			Photo photo = photoService.findById(caPho.getPhotoId());
 			photoCheck = true;
 			String filePath = "/img/" + photo.getFileName();
-//			String filePath = "C:/EmployeeManager/static/photo/" + photo.getFileName();
 			mav.addObject("filePath", filePath);
 		}
 
@@ -1198,7 +1197,7 @@ public class EmployeeManageController {
 
 			photoService.save(photo);
 
-			Photo savePhoto = photoService.findByFileName(fileName);
+			Photo savePhoto = photoService.findByLatestOne();
 			CaPho caPho = new CaPho();
 
 			caPho.setCardId(id);

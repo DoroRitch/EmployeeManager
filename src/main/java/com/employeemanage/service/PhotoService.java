@@ -25,12 +25,11 @@ public class PhotoService {
 
 	private Query query;
 
-	public Photo findByFileName(String name) {
+	public Photo findByLatestOne() {
 
 		query = entityManager
-				.createNativeQuery("select * from photo "
-						+ "where file_name = ?", Photo.class);
-		query.setParameter(1, name);
+				.createNativeQuery("select * from ( select * from photo order by id desc ) "
+						+ "where rownum <=1", Photo.class);
 		return (Photo)query.getSingleResult();
 	}
 
