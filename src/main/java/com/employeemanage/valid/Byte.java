@@ -20,7 +20,7 @@ public @interface Byte {
 	String charset() default "UTF-8";
 
 	Class<?>[] groups() default {};
-	String message() default "{charset}で{min}バイトから{max}バイトにしてください";
+	String message() default "{charset}で{min}Byteから{max}Byteの文字列にしてください";
 	Class<? extends Payload>[] payload() default{};
 
 	@Target({ElementType.FIELD})
