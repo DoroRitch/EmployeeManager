@@ -35,12 +35,16 @@
 				<th class = "text-center"><label for = "position">役職</label></th>
 				<td>
 					<input type = "text" name = "position" class = "form-control">
+					<div th:if = "${#fields.hasErrors('position')}" th:errors = "*{position}"
+						style = "color : red"></div>
 				</td>
 			</tr>
 			<tr>
 				<th class = "text-center"><label for = "department">所属部署</label></th>
 				<td>
 					<input type = "text" name = "department" class = "form-control">
+					<div th:if = "${#fields.hasErrors('department')}" th:errors = "*{department}"
+						style = "color : red"></div>
 				</td>
 			</tr>
 			<tr>
