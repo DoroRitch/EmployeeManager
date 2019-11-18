@@ -48,20 +48,17 @@ import com.employeemanage.service.LanguageService;
 import com.employeemanage.service.PhotoService;
 import com.employeemanage.service.ProductService;
 
-
 /**
- * EmployeeManageController
- * 						アプリケーションの挙動を決定するController
+ * EmployeeManageController アプリケーションの挙動を決定するController
  *
  * @author Otomo
  *
- * @param	AParam		メソッドの引数
- * @param	VParam		メソッドの中で定義される変数
+ * @param AParam メソッドの引数
+ * @param VParam メソッドの中で定義される変数
  *
- * Development period	2019/10/16	--	2019/10/30	サーバーサイド完成（ver1.0分）
- * 									2019/10/31	--	2019/11/01	Bootstrapの導入・フロントサイド実装完成
+ *               Development period 2019/10/16 -- 2019/10/30 サーバーサイド完成（ver1.0分）
+ *               2019/10/31 -- 2019/11/01 Bootstrapの導入・フロントサイド実装完成
  */
-
 
 @Controller
 public class EmployeeManageController {
@@ -93,8 +90,10 @@ public class EmployeeManageController {
 	EntityManager entityManager;
 
 //	Test用画像保存フォルダ
-	private final String PHOTO_DIRECTORY
-	= "C:/Users/Inter/Desktop/otomo/JavaWork/EmployeeManager/static/img/";
+	private final String PHOTO_DIRECTORY = "C:/Users/Inter/Desktop/otomo/JavaWork/EmployeeManager/static/img/";
+
+////	本番用画像保存フォルダ
+//	private final String PHOTO_DIRECTORY = "Z:/01_トレーニング/成果物/アプリ系/従業員管理システム 大友/EmployeeManager/src/main/resources/static/img/";
 
 	@PostConstruct
 	public void init() {
@@ -105,25 +104,26 @@ public class EmployeeManageController {
 		caPhoService.setEntityManager(entityManager);
 		coLangService.setEntityManager(entityManager);
 		coProdService.setEntityManager(entityManager);
-		}
+	}
 
 	/**
 	 * employeeDetailメソッド
 	 * 		Employee_detail.htmlを開く事が多い上に、必要な処理が多いため、メソッドとして分離した。
 	 * 		GETで渡した従業員IDを基にEmployeeテーブルを検索し、そのレコードのresident_idによって処理を分岐させている。
 	 *
-	 * @AParam id							従業員ID
-	 * @AParam employee				呼び出すハンドラーでnewしたEmployeeインスタンス
-	 * @AParam residentCheck		検索した従業員が派遣されているのか、本社勤務であるのかのフラグ
+	 * @AParam id 従業員ID
+	 * @AParam employee 呼び出すハンドラーでnewしたEmployeeインスタンス
+	 * @AParam residentCheck 検索した従業員が派遣されているのか、本社勤務であるのかのフラグ
 	 *
-	 * @VParam residentId				検索したEmployeeレコードのresident_id。
-	 * @VParam empLangList		emp_langテーブルに記録されている従業員が習得しているスキルの一覧。
-	 * @VParam langStr					従業員が習得しているスキルを文字列に整形したもの。HTMLではこれを表示する。
-	 * @VParam empProdList			emp_prodテーブルに記録されている従業員が関与した実績のリスト。
-	 * @VParam prodList				従業員が関与した実績のリスト。
+	 * @VParam residentId 検索したEmployeeレコードのresident_id。
+	 * @VParam empLangList emp_langテーブルに記録されている従業員が習得しているスキルの一覧。
+	 * @VParam langStr 従業員が習得しているスキルを文字列に整形したもの。HTMLではこれを表示する。
+	 * @VParam empProdList emp_prodテーブルに記録されている従業員が関与した実績のリスト。
+	 * @VParam prodList 従業員が関与した実績のリスト。
 	 */
 	public void employeeDetail(Integer id, Employee employee,
-			boolean residentCheck, ModelAndView mav)  {
+			boolean residentCheck,
+			ModelAndView mav) {
 
 		employee = employeeService.findById(id).orElse(null);
 		Integer residentId = employee.getResidentId();
@@ -146,8 +146,8 @@ public class EmployeeManageController {
 		String langStr = "";
 
 		for (EmpLang laId : empLangList) {
-			String lang = languageService.findById(laId.getLangId())
-						.orElse(null).getName();
+
+			String lang = languageService.findById(laId.getLangId()).orElse(null).getName();
 			langStr = langStr + lang + ", ";
 		}
 		mav.addObject("languageList", langStr);
@@ -157,8 +157,7 @@ public class EmployeeManageController {
 
 		for (EmpProd proId : empProdList) {
 
-			Product hasProduct = productService.findById(proId.getProdId())
-						.orElse(null);
+			Product hasProduct = productService.findById(proId.getProdId()).orElse(null);
 			prodList.add(hasProduct);
 		}
 		mav.addObject("productList", prodList);
@@ -169,14 +168,14 @@ public class EmployeeManageController {
 	 * 		/Card_detailを開くことが頻繁にあり、同一の処理が複数回記述されるため、隔離。
 	 * 		詳細ページを開く対象のCardクラスのエンティティを引数として渡す。
 	 *
-	 * @AParam card						名刺ID。
+	 * @AParam card 名刺ID。
 	 *
-	 * @VParam photoCheck			名刺に名刺画像を紐付けしているかどうかのフラグ。
-	 * @VParam caPho					当該名刺IDと紐付けられている画像IDを持つエンティティ。
-	 * @VPamra photo					当該名刺と紐付けられている名刺画像。
-	 * @VParam filePath				名刺画像が保存されているパス。
-	 * @VParam companyId			当該名刺が所属する企業のID。
-	 * @VParam company				当該名刺が所属する企業情報のエンティティ。
+	 * @VParam photoCheck 名刺に名刺画像を紐付けしているかどうかのフラグ。
+	 * @VParam caPho 当該名刺IDと紐付けられている画像IDを持つエンティティ。
+	 * @VPamra photo 当該名刺と紐付けられている名刺画像。
+	 * @VParam filePath 名刺画像が保存されているパス。
+	 * @VParam companyId 当該名刺が所属する企業のID。
+	 * @VParam company 当該名刺が所属する企業情報のエンティティ。
 	 */
 	public void cardDetail(Card card, ModelAndView mav) {
 
@@ -202,16 +201,16 @@ public class EmployeeManageController {
 
 	/**
 	 * companyDetailメソッド
-	 * 			Company_detail.htmlを開く事が多い上に、必要な処理が多いため、メソッドとして分離した。
-	 * 			引数としてcompany_idを受け取り、詳細ページに表示する情報を各テーブルから検索する。
+	 * 		Company_detail.htmlを開く事が多い上に、必要な処理が多いため、メソッドとして分離した。
+	 * 		引数としてcompany_idを受け取り、詳細ページに表示する情報を各テーブルから検索する。
 	 *
-	 * @AParam comId			企業ID。
+	 * @AParam comId 企業ID。
 	 *
-	 * @VParam company		Companyテーブルから取り出したエンティティインスタンス。
-	 * @VParam useSkill		当該企業でよく用いられるスキルIDのリスト。
-	 * @VParam skillStr			スキル名を","区切りで整形した文字列。
-	 * @VParam coProdList	当該企業が関わった実績IDのリスト。
-	 * @VParam productList	実績エンティティのリスト。
+	 * @VParam company Companyテーブルから取り出したエンティティインスタンス。
+	 * @VParam useSkill 当該企業でよく用いられるスキルIDのリスト。
+	 * @VParam skillStr スキル名を","区切りで整形した文字列。
+	 * @VParam coProdList 当該企業が関わった実績IDのリスト。
+	 * @VParam productList 実績エンティティのリスト。
 	 */
 	public void companyDetail(int comId, ModelAndView mav) {
 
@@ -250,13 +249,13 @@ public class EmployeeManageController {
 	 * 		/Product_detailに頻繁にアクセスし、かつ処理も多くなってしまったので、まとめるべく隔離。
 	 * 		引数に詳細ページを開こうとする実績のIDを渡す。
 	 *
-	 * @AParam prodId					実績ID。
+	 * @AParam prodId 実績ID。
 	 *
-	 * @VParam empProd				当該実績のIDと紐付けられている従業員のIDを持つエンティティ。
-	 * @VParam empIdList				当該実績を持つ従業員のIDリスト。
-	 * @VParam empList				当該実績を持つ従業員のエンティティリスト。
-	 * @VParam coProd					当該実績のIDと紐付けられている企業のIDを持つエンティティ。
-	 * @VParam companyList			当該実績と紐付けられている企業のエンティティリスト。
+	 * @VParam empProd 当該実績のIDと紐付けられている従業員のIDを持つエンティティ。
+	 * @VParam empIdList 当該実績を持つ従業員のIDリスト。
+	 * @VParam empList 当該実績を持つ従業員のエンティティリスト。
+	 * @VParam coProd 当該実績のIDと紐付けられている企業のIDを持つエンティティ。
+	 * @VParam companyList 当該実績と紐付けられている企業のエンティティリスト。
 	 */
 	public void productDetail(int prodId, ModelAndView mav) {
 
@@ -268,12 +267,14 @@ public class EmployeeManageController {
 		List<Integer> empIdList = new ArrayList<>();
 
 		for (EmpProd obj : empProd) {
+
 			empIdList.add(obj.getEmpId());
 		}
 
 		List<Employee> empList = new ArrayList<>();
 
 		for (Integer empId : empIdList) {
+
 			empList.add(employeeService.findById(empId).orElse(null));
 		}
 		mav.addObject("empList", empList);
@@ -292,7 +293,7 @@ public class EmployeeManageController {
 	 * indexメソッド
 	 * 		アプリケーションのトップページの出力。
 	 *
-	 * @return String			最終的に表示するページの情報をString形式で返す。
+	 * @return String 最終的に表示するページの情報をString形式で返す。
 	 */
 	@GetMapping("/")
 	public String index() {
@@ -305,9 +306,9 @@ public class EmployeeManageController {
 	 * 		Employeeテーブルの内容を一覧にして表示するページの出力。
 	 * 		各従業員の名前が各従業員の詳細ページへのリンクになっている。
 	 *
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam employeeDataList		Employeeテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam employeeDataList Employeeテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/Employee_List")
 	public ModelAndView showEmployeeList(ModelAndView mav) {
@@ -325,14 +326,13 @@ public class EmployeeManageController {
 	 * 		/Employee_Listから/Employee_AddにGETでアクセスした際に実行される。
 	 * 		従業員の情報を新規に登録するページの出力。
 	 *
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam	companyDataList		Companyテーブルから全件検索した結果のエンティティリスト。
-	 * 								従業員が現在常駐している取引先企業をselect型式で選択する際に用いる。
+	 * @VParam companyDataList Companyテーブルから全件検索した結果のエンティティリスト。
+	 *         従業員が現在常駐している取引先企業をselect型式で選択する際に用いる。
 	 */
 	@GetMapping("/Employee_Add")
-	public ModelAndView formToAddEmployee(@ModelAttribute Employee employee,
-				ModelAndView mav) {
+	public ModelAndView formToAddEmployee(@ModelAttribute Employee employee, ModelAndView mav) {
 
 		mav.setViewName("Employee_Add");
 
@@ -345,18 +345,16 @@ public class EmployeeManageController {
 	/**
 	 * addEmployeeメソッド
 	 * 		/Employee_AddからPOSTでアクセスした際に実行される。
-	 * 		フォームに入力・選択された情報をEmployeeテーブルに1エンティティとして挿入する。
-	 * 		挿入した後は、/Employee_Listにリダイレクトする。
+	 * 		フォームに入力・選択された情報をEmployeeテーブルに1エンティティとして挿入する。 挿入した後は、/Employee_Listにリダイレクトする。
 	 *
-	 * @AParam employee				/Employee_Addのフォームに入力した情報をエンティティとして取得した内容。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam employee /Employee_Addのフォームに入力した情報をエンティティとして取得した内容。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam employeeDataList		Employeeテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam employeeDataList Employeeテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@PostMapping("/Employee_Add")
 	@Transactional(readOnly = false)
-	public ModelAndView addEmployee(@Valid @ModelAttribute Employee employee,
-			BindingResult result,
+	public ModelAndView addEmployee(@Valid @ModelAttribute Employee employee, BindingResult result,
 			ModelAndView mav) {
 
 		if (result.hasErrors()) {
@@ -384,15 +382,16 @@ public class EmployeeManageController {
 	 * 		検索したエンティティからresident_idを取得して、常駐している企業データも表示する。
 	 * 		resident_idが'0'の場合、"本社勤務"と表示する。
 	 *
-	 * @AParam id				GETパラメータで渡された従業員ID
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id GETパラメータで渡された従業員ID
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam employee			GETパラメータのidでEmployeeテーブルを検索した結果のエンティティ。
-	 * @VParam residentCheck	Employee_detail.htmlにおける三項演算子のチェッカー。
-	 * 											（客先に常駐していればtrue, 本社勤務であればfalse）
+	 * @VParam employee GETパラメータのidでEmployeeテーブルを検索した結果のエンティティ。
+	 * @VParam residentCheck Employee_detail.htmlにおける三項演算子のチェッカー。 （客先に常駐していればtrue,
+	 *         本社勤務であればfalse）
 	 */
 	@GetMapping("/Employee_detail")
-	public ModelAndView detailOfEmployee(@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView detailOfEmployee(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		mav.setViewName("Employee_detail");
 
@@ -406,22 +405,21 @@ public class EmployeeManageController {
 
 	/**
 	 * formToUpdateEmployeeメソッド
-	 *		/Employee_detailから/Employee_UpdateにGETでアクセスした際に実行される。
-	 *		従業員情報を編集するために情報を入力・選択するフォームページの出力。
+	 * 		/Employee_detailから/Employee_UpdateにGETでアクセスした際に実行される。
+	 * 		従業員情報を編集するために情報を入力・選択するフォームページの出力。
 	 *
-	 * @AParam id							GETパラメータで渡された従業員ID。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id GETパラメータで渡された従業員ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam employee				GETで渡された従業員IDでEmployeeテーブルを検索した結果のエンティティ。
-	 * 												当該エンティティを編集する。
-	 * @VParam companyDataList	Companyテーブルから全件検索した結果のエンティティリスト。
-	 * 												従業員が現在常駐している取引先企業をselect型式で選択する際に用いる。
-	 * @VParam residentId				従業員が派遣されている企業のID。
-	 * @VParam residentCheck		従業員が派遣されているかどうかの判定のためのフラグ。
+	 * @VParam employee GETで渡された従業員IDでEmployeeテーブルを検索した結果のエンティティ。 当該エンティティを編集する。
+	 * @VParam companyDataList Companyテーブルから全件検索した結果のエンティティリスト。
+	 *         従業員が現在常駐している取引先企業をselect型式で選択する際に用いる。
+	 * @VParam residentId 従業員が派遣されている企業のID。
+	 * @VParam residentCheck 従業員が派遣されているかどうかの判定のためのフラグ。
 	 */
 	@GetMapping("/Employee_Update")
 	public ModelAndView formToUpdateEmployee(@RequestParam("id") int id,
-				ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("Employee_Update");
 
@@ -448,18 +446,18 @@ public class EmployeeManageController {
 	 * 		更新した後、編集した内容を確認するために/Employee_detailページにリダイレクトする。
 	 * 		その際に、hidden属性で渡された従業員IDをGETパラメータで渡す。
 	 *
-	 * @AParam employee			/Employee_Updateで編集したエンティティ情報。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam employee /Employee_Updateで編集したエンティティ情報。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam id 					従業員Id。
-	 * @VParam residentCheck	Employee_detail.htmlにおける三項演算子のチェッカー。
-	 * 											（客先に常駐していればtrue, 本社勤務であればfalse）
+	 * @VParam id 従業員Id。
+	 * @VParam residentCheck Employee_detail.htmlにおける三項演算子のチェッカー。 （客先に常駐していればtrue,
+	 *         本社勤務であればfalse）
 	 */
 	@PostMapping("/Employee_Update")
 	@Transactional(readOnly = false)
 	public ModelAndView updateEmployee(@Valid @ModelAttribute Employee employee,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
 		if (result.hasErrors()) {
 
@@ -490,18 +488,18 @@ public class EmployeeManageController {
 	/**
 	 * formToSelectEmployeeSkillメソッド
 	 * 		/Employee_detailからGETでアクセスした際に実行される。
-	 *		従業員が習得している技術を編集するページを出力する。
+	 * 		従業員が習得している技術を編集するページを出力する。
 	 *
-	 * @AParam id								/Employee_detailからGETパラメータとして渡された従業員ID。
-	 * @return ModelAndView				最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id /Employee_detailからGETパラメータとして渡された従業員ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam empLang					GETパラメータのIdをEmployee_idカラムの値として持つemp_langテーブルのエンティティリスト
-	 * @VParam langId						empLangに入っているそれぞれのレコードが持つlanguage_idの値。
-	 * @VParam languageDataList		Languageテーブルを全件検索した結果のエンティティリスト。
+	 * @VParam empLang GETパラメータのIdをEmployee_idカラムの値として持つemp_langテーブルのエンティティリスト
+	 * @VParam langId empLangに入っているそれぞれのレコードが持つlanguage_idの値。
+	 * @VParam languageDataList Languageテーブルを全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/EmpLang")
 	public ModelAndView formToSelectEmployeeSkill(@RequestParam("id") int id,
-								ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("emp_lang");
 		mav.addObject("empId", id);
@@ -510,6 +508,7 @@ public class EmployeeManageController {
 		List<Integer> langId = new ArrayList<>();
 
 		for (EmpLang obj : empLang) {
+
 			langId.add(obj.getLangId());
 		}
 		mav.addObject("langList", langId);
@@ -522,29 +521,27 @@ public class EmployeeManageController {
 
 	/**
 	 * updateEmployeeSkillメソッド
-	 *		/EmpLangからPOSTでアクセスした際に実行される。
-	 *		選択したスキルをemp_langテーブルに記録していなければ、挿入する。
-	 *		選択されなかったスキルの中で、以前記録されていたものがあれば、削除する。
-	 *		SQL処理が完了すれば、/Employee_detailにリダイレクトする。
-	 *		スキルが一つも選択されなければ、/Employee_detailにリダイレクトさせる。
+	 * 		/EmpLangからPOSTでアクセスした際に実行される。
+	 * 		選択したスキルをemp_langテーブルに記録していなければ、挿入する。 選択されなかったスキルの中で、以前記録されていたものがあれば、削除する。
+	 * 		SQL処理が完了すれば、/Employee_detailにリダイレクトする。
+	 * 		スキルが一つも選択されなければ、/Employee_detailにリダイレクトさせる。
 	 *
-	 * @AParam empId					/EmpLangからhidden属性で渡された従業員ID。
-	 * @AParam langIdArray			選択されたスキルIDを配列で受け取った値。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam empId /EmpLangからhidden属性で渡された従業員ID。
+	 * @AParam langIdArray 選択されたスキルIDを配列で受け取った値。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam hasLang				従業員IDを基にemp_langテーブルを検索した結果のエンティティリスト。
-	 * @VParam selectLangIdList	hasLangの1インスタンスが持つlanguage_idを持つリスト。
-	 * @VParam empLang				既に習得技術として記録されているエンティティ
-	 * @VParam addLang				新たに記録する習得技術のエンティティ。
-	 * @VParam employee				employeeDetailメソッド用変数。
-	 * @VParam residentCheck		employeeDetailメソッド用変数。
+	 * @VParam hasLang 従業員IDを基にemp_langテーブルを検索した結果のエンティティリスト。
+	 * @VParam selectLangIdList hasLangの1インスタンスが持つlanguage_idを持つリスト。
+	 * @VParam empLang 既に習得技術として記録されているエンティティ
+	 * @VParam addLang 新たに記録する習得技術のエンティティ。
+	 * @VParam employee employeeDetailメソッド用変数。
+	 * @VParam residentCheck employeeDetailメソッド用変数。
 	 */
 	@PostMapping("/EmpLang")
 	@Transactional(readOnly = false)
-	public ModelAndView updateEmployeeSkill(
-				@RequestParam(value = "empId") Integer empId,
-				@RequestParam(value = "langId", required = false) int[] langIdArray,
-				ModelAndView mav) {
+	public ModelAndView updateEmployeeSkill(@RequestParam(value = "empId") Integer empId,
+			@RequestParam(value = "langId", required = false) int[] langIdArray,
+			ModelAndView mav) {
 
 		if (langIdArray != null) {
 
@@ -552,7 +549,8 @@ public class EmployeeManageController {
 			List<Integer> selectLangIdList = new ArrayList<>();
 
 			for (int selectId : langIdArray) {
-				selectLangIdList.add((Integer)selectId);
+
+				selectLangIdList.add((Integer) selectId);
 			}
 
 			for (EmpLang hasLanguage : hasLang) {
@@ -563,10 +561,9 @@ public class EmployeeManageController {
 				}
 			}
 
-			for(int langId : selectLangIdList) {
+			for (int langId : selectLangIdList) {
 
-				EmpLang empLang = empLangService
-							.findByEmpIdAndLangId(empId, langId);
+				EmpLang empLang = empLangService.findByEmpIdAndLangId(empId, langId);
 
 				if (empLang == null) {
 
@@ -595,17 +592,18 @@ public class EmployeeManageController {
 	 * formToConnectProductWithEmployeeメソッド
 	 * 		従業員が関与した実績を編集するページの出力。
 	 * 		/Employee_detailからGETパラメータで従業員IDをもらう。
-	 * @AParam id									GETパラメータで渡された従業員ID。
-	 * @return@return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam empProd						従業員が関与した実績のリスト。
-	 * @VParam prodId							実績IDを格納したリスト。
-	 * @VParam productList					formの中で選択肢に使う全実績のリスト
-	 * @VParam languageList					実績に紐付けするスキルのリスト。
+	 * @AParam id GETパラメータで渡された従業員ID。
+	 * @return@return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
+	 *
+	 * @VParam empProd 従業員が関与した実績のリスト。
+	 * @VParam prodId 実績IDを格納したリスト。
+	 * @VParam productList formの中で選択肢に使う全実績のリスト
+	 * @VParam languageList 実績に紐付けするスキルのリスト。
 	 */
 	@GetMapping("/EmpProd")
 	public ModelAndView formToConnectProductWithEmployee(@RequestParam("id") int id,
-									ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("emp_prod");
 		mav.addObject("empId", id);
@@ -634,23 +632,22 @@ public class EmployeeManageController {
 	 * 		選択された実績一つについて、使用したスキルと関わった業務形態を文字列にしてemp_prodテーブルに挿入する。
 	 * 		既に挿入されている実績が選択されていれば、記録されているレコードを更新する。
 	 *
-	 * @AParam empId							hidden属性で渡された従業員ID。
-	 * @AParam prodId							選択された実績のID。
-	 * @AParam langIdArray					選択されたスキルのIDを格納するリスト。
-	 * @AParam type								text属性で記入された業務形態。
-	 * @return@return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam empId hidden属性で渡された従業員ID。
+	 * @AParam prodId 選択された実績のID。
+	 * @AParam langIdArray 選択されたスキルのIDを格納するリスト。
+	 * @AParam type text属性で記入された業務形態。
+	 * @return@return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam addEmpProd					選択された結果の情報を持ったEmpProdエンティティのインスタンス。
-	 * @VParam hasProd						選択された実績IDとGETパラメータの従業員IDを持つエンティティをemp_prodテーブルから検索した結果。
-	 * @VParam skillStr							emp_prodのskillカラムに記録する使用したスキルを","区切りで整形した文字列。
+	 * @VParam addEmpProd 選択された結果の情報を持ったEmpProdエンティティのインスタンス。
+	 * @VParam hasProd 選択された実績IDとGETパラメータの従業員IDを持つエンティティをemp_prodテーブルから検索した結果。
+	 * @VParam skillStr emp_prodのskillカラムに記録する使用したスキルを","区切りで整形した文字列。
 	 */
 	@PostMapping("/EmpProd")
-	public ModelAndView connectProductWithEmployee(
-				@RequestParam("empId") Integer empId,
-				@RequestParam("prodId") int prodId,
-				@RequestParam("skillId") int[] langIdArray,
-				@RequestParam("type") String type,
-				ModelAndView mav) {
+	public ModelAndView connectProductWithEmployee(@RequestParam("empId") Integer empId,
+			@RequestParam("prodId") int prodId,
+			@RequestParam("skillId") int[] langIdArray,
+			@RequestParam("type") String type,
+			ModelAndView mav) {
 
 		EmpProd addEmpProd = new EmpProd();
 		addEmpProd.setEmpId(empId);
@@ -659,14 +656,14 @@ public class EmployeeManageController {
 		EmpProd hasProd = empProdService.findByEmpIdAndProdId(empId, prodId);
 
 		if (hasProd != null) {
+
 			addEmpProd.setId(hasProd.getId());
 		}
 
 		String skillStr = "";
 		for (int skill : langIdArray) {
 
-			Language useSkill = languageService
-								.findById(skill).orElse(null);
+			Language useSkill = languageService.findById(skill).orElse(null);
 			skillStr = skillStr + useSkill.getName() + ",";
 		}
 		addEmpProd.setSkill(skillStr);
@@ -689,9 +686,9 @@ public class EmployeeManageController {
 	 * 		Companyテーブルの内容を一覧にして表示するページの出力。
 	 * 		各企業の名前がそれぞれの詳細ページへのリンクになっている。
 	 *
-	 * @return ModelAndView				最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam companyDataList		Companyテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam companyDataList Companyテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/Company_List")
 	public ModelAndView showCompanyList(ModelAndView mav) {
@@ -709,11 +706,11 @@ public class EmployeeManageController {
 	 * 		/Company_Listから/Company_AddにGETでアクセスした際に実行される。
 	 * 		企業の情報を新規に登録するページの出力。
 	 *
-	 * @return ModelAndView				最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 */
 	@GetMapping("/Company_Add")
 	public ModelAndView formToAddCompany(@ModelAttribute Company company,
-					ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("Company_Add");
 
@@ -726,17 +723,18 @@ public class EmployeeManageController {
 	 * 		フォームに入力された情報を1エンティティとしてCompanyテーブルに挿入する。
 	 * 		挿入後は、/Company_Listにリダイレクトする。
 	 *
-	 * @AParam company					/Company_Addに入力された情報をエンティティとして取得した内容。
-	 * @return ModelAndView				最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam company /Company_Addに入力された情報をエンティティとして取得した内容。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam companyDataList		Companyテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam companyDataList Companyテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@PostMapping("/Company_Add")
 	public ModelAndView addCompany(@Valid @ModelAttribute Company company,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Company_Add");
 			mav.addObject("company", company);
 			return mav;
@@ -756,15 +754,16 @@ public class EmployeeManageController {
 	 * 		/Company_Listから各企業の詳細ページにアクセスした際に実行されるメソッド。
 	 * 		GETパラメータで企業idを渡し、Companyテーブルを検索・表示する。
 	 *
-	 * @AParam id						GETパラメータで渡された企業ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id GETパラメータで渡された企業ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam company			CompanyテーブルをGETで渡された企業IDで検索した結果のエンティティ。
-	 * @VParam useSkill			co_langテーブルに記録されている、主な使用スキルの一覧。
-	 * @VParam skillStr				使用するスキルを","区切りで文字列に整形したもの。HTMLでこれを表示する。
+	 * @VParam company CompanyテーブルをGETで渡された企業IDで検索した結果のエンティティ。
+	 * @VParam useSkill co_langテーブルに記録されている、主な使用スキルの一覧。
+	 * @VParam skillStr 使用するスキルを","区切りで文字列に整形したもの。HTMLでこれを表示する。
 	 */
 	@GetMapping("/Company_detail")
-	public ModelAndView detailOfCompany(@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView detailOfCompany(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		companyDetail(id, mav);
 
@@ -776,13 +775,14 @@ public class EmployeeManageController {
 	 * 		/Company_detailからGETでアクセスした際に実行される。
 	 * 		企業情報を入力するためのフォーム画面を出力する。
 	 *
-	 * @AParam id						/Company_detailからGETパラメータとして渡された企業ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id /Company_detailからGETパラメータとして渡された企業ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam company			GETパラメータで渡された企業IDでCompanyテーブルを検索した結果のエンティティ。
+	 * @VParam company GETパラメータで渡された企業IDでCompanyテーブルを検索した結果のエンティティ。
 	 */
 	@GetMapping("/Company_Update")
-	public ModelAndView formToUpdateCompany(@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView formToUpdateCompany(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		mav.setViewName("Company_Update");
 
@@ -799,17 +799,18 @@ public class EmployeeManageController {
 	 * 		更新した後、編集した内容を確認するために/Company_detailページにリダイレクトする。
 	 * 		その際に、hidden属性で渡された企業IDをGETパラメータで渡す。
 	 *
-	 * @AParam company				/Company_Updateに入力された情報を持つエンティティ。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam company /Company_Updateに入力された情報を持つエンティティ。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam comId					当該企業のID。
+	 * @VParam comId 当該企業のID。
 	 */
 	@PostMapping("/Company_Update")
 	public ModelAndView updateCompany(@Valid @ModelAttribute Company company,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Company_Update");
 			mav.addObject("company", company);
 			Company companyData = companyService.findById(company.getId()).orElse(null);
@@ -831,16 +832,16 @@ public class EmployeeManageController {
 	 * 		/Company_detailからGETでアクセスした際に実行される。
 	 * 		当該企業で主に用いられるスキルを紐付けするためのフォームを出力する。
 	 *
-	 * @AParam id						/Company_detailからGETパラメータで渡された企業ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id /Company_detailからGETパラメータで渡された企業ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam coLang				すでに登録されているスキルのインスタンスリスト。
-	 * @VParam hasLangList		すでに登録されているスキルIDのリスト。
-	 * @VParam langList			Languageテーブルに記録されているスキルの一覧。
+	 * @VParam coLang すでに登録されているスキルのインスタンスリスト。
+	 * @VParam hasLangList すでに登録されているスキルIDのリスト。
+	 * @VParam langList Languageテーブルに記録されているスキルの一覧。
 	 */
 	@GetMapping("/CoLang")
-	public ModelAndView formToSelectCompanySkill(
-			@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView formToSelectCompanySkill(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		mav.setViewName("co_lang");
 		mav.addObject("comId", id);
@@ -866,18 +867,17 @@ public class EmployeeManageController {
 	 * 		入力フォームで選択されたスキルについて、①選択されていないスキルを既に登録されていれば当該レコードを削除し
 	 * 		②選択されたスキルが未だ登録されていなければ新規で挿入する。
 	 *
-	 * @AParam comId				hidden属性で渡された従業員ID。
-	 * @AParam langIdArray		一つ以上の選択されたスキルIDを配列に格納したもの。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam comId hidden属性で渡された従業員ID。
+	 * @AParam langIdArray 一つ以上の選択されたスキルIDを配列に格納したもの。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam hasLang			渡された企業IDが持つco_langテーブルのエンティティリスト。
-	 * @VParam selectLangList	選択されたスキルIDをリストにしたもの。
-	 * @VParam coLang				選択されたスキルが既に登録されているかを調べたインスタンス。
-	 * @VParam addLang			新規に登録する際に作成するco_langエンティティのインスタンス。
+	 * @VParam hasLang 渡された企業IDが持つco_langテーブルのエンティティリスト。
+	 * @VParam selectLangList 選択されたスキルIDをリストにしたもの。
+	 * @VParam coLang 選択されたスキルが既に登録されているかを調べたインスタンス。
+	 * @VParam addLang 新規に登録する際に作成するco_langエンティティのインスタンス。
 	 */
 	@PostMapping("/CoLang")
-	public ModelAndView selectCompanySkill(
-			@RequestParam("comId") int comId,
+	public ModelAndView selectCompanySkill(@RequestParam("comId") int comId,
 			@RequestParam(value = "langId", required = false) int[] langIdArray,
 			ModelAndView mav) {
 
@@ -887,7 +887,8 @@ public class EmployeeManageController {
 			List<Integer> selectLangList = new ArrayList<>();
 
 			for (int selectId : langIdArray) {
-				selectLangList.add((Integer)selectId);
+
+				selectLangList.add((Integer) selectId);
 			}
 
 			for (CoLang hasLanguage : hasLang) {
@@ -898,10 +899,9 @@ public class EmployeeManageController {
 				}
 			}
 
-			for(int langId : selectLangList) {
+			for (int langId : selectLangList) {
 
-				CoLang coLang = coLangService
-							.findByComIdAndLangId(comId, langId);
+				CoLang coLang = coLangService.findByComIdAndLangId(comId, langId);
 
 				if (coLang == null) {
 
@@ -923,17 +923,17 @@ public class EmployeeManageController {
 
 	/**
 	 * formToConnectCompanyWithProductメソッド
-	 * 			/Company_detailからGETでアクセスした際に実行される。
-	 * 			企業が関連する実績との紐付けを行うためのフォームページの出力。
+	 * 		/Company_detailからGETでアクセスした際に実行される。
+	 * 		企業が関連する実績との紐付けを行うためのフォームページの出力。
 	 *
-	 * @AParam id						/Company_detailからGETパラメータで渡された企業ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id /Company_detailからGETパラメータで渡された企業ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam productList		選択肢として使用するための全実績リスト。
+	 * @VParam productList 選択肢として使用するための全実績リスト。
 	 */
 	@GetMapping("/CoProd")
-	public ModelAndView formToConnectCompanyWithProduct(
-				@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView formToConnectCompanyWithProduct(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		mav.setViewName("co_prod");
 		mav.addObject("comId", id);
@@ -946,20 +946,19 @@ public class EmployeeManageController {
 
 	/**
 	 * connectCompanyWithProductメソッド
-	 * 			/CoProdからPOSTでアクセスした際に実行される。
-	 * 			selectで選んだ実績の情報と企業の情報を紐付けするためにco＿prodテーブルに挿入する。
+	 * 		/CoProdからPOSTでアクセスした際に実行される。
+	 * 		selectで選んだ実績の情報と企業の情報を紐付けするためにco＿prodテーブルに挿入する。
 	 *
-	 * @AParam comId					/CoProdからhidden属性で渡された企業ID。
-	 * @AParam prodId					/CoProdで選択した実績ID。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam comId /CoProdからhidden属性で渡された企業ID。
+	 * @AParam prodId /CoProdで選択した実績ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam addedCoProd		選択した実績が既に登録されているかを確かめるためのエンティティ。
+	 * @VParam addedCoProd 選択した実績が既に登録されているかを確かめるためのエンティティ。
 	 */
 	@PostMapping("/CoProd")
-	public ModelAndView connectCompanyWithProduct(
-				@RequestParam("comId") int comId,
-				@RequestParam("prodId") int prodId,
-				ModelAndView mav) {
+	public ModelAndView connectCompanyWithProduct(@RequestParam("comId") int comId,
+			@RequestParam("prodId") int prodId,
+			ModelAndView mav) {
 
 		CoProd addedCoProd = coProdService.findByComIdAndProdId(comId, prodId);
 
@@ -982,9 +981,9 @@ public class EmployeeManageController {
 	 * 		Cardテーブルの内容を一覧にして表示するページの出力。
 	 * 		名前が各名刺の詳細ページへのリンクになっている。
 	 *
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam cardDataList			Cardテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam cardDataList Cardテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/Card_List")
 	public ModelAndView showCardList(ModelAndView mav) {
@@ -1002,14 +1001,14 @@ public class EmployeeManageController {
 	 * 		/Card_Listから/Card_AddへGETでアクセスした際に実行される。
 	 * 		名刺を新規に登録するページの出力。
 	 *
-	 * @return ModelAndView				最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam companyDataList		Companyテーブルから全件検索した結果のエンティティリスト。
-	 * 													名刺の持ち主が在籍している企業をselect型式で選択する際に用いる。
+	 * @VParam companyDataList Companyテーブルから全件検索した結果のエンティティリスト。
+	 *         名刺の持ち主が在籍している企業をselect型式で選択する際に用いる。
 	 */
 	@GetMapping("/Card_Add")
 	public ModelAndView formToAddCard(@ModelAttribute Card card,
-				ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("Card_Add");
 
@@ -1025,23 +1024,24 @@ public class EmployeeManageController {
 	 * 		/Card_Addに入力・選択された情報を1エンティティとしてCardテーブルに挿入する。
 	 * 		挿入後は/Card_Listにリダイレクトする。
 	 *
-	 * @AParam card						/Card_Addで入力された情報をエンティティとして取得した内容。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam card /Card_Addで入力された情報をエンティティとして取得した内容。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam cardDataList			Cardテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam cardDataList Cardテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@PostMapping("/Card_Add")
 	public ModelAndView addCard(@Valid @ModelAttribute Card card,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
-	if (result.hasErrors()) {
-		mav.setViewName("Card_Add");
-		mav.addObject("card", card);
-		List<Company> companyDataList = companyService.findAll();
-		mav.addObject("dataList", companyDataList);
-		return mav;
-	}
+		if (result.hasErrors()) {
+
+			mav.setViewName("Card_Add");
+			mav.addObject("card", card);
+			List<Company> companyDataList = companyService.findAll();
+			mav.addObject("dataList", companyDataList);
+			return mav;
+		}
 
 		mav.setViewName("Card_List");
 
@@ -1058,18 +1058,19 @@ public class EmployeeManageController {
 	 * 		/Card_ListからGETでアクセスした際に実行される。
 	 * 		名刺の詳細情報を表示するページの出力。
 	 *
-	 * @AParam id						/Card_ListからGETパラメータで渡された名刺ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id /Card_ListからGETパラメータで渡された名刺ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam card					詳細ページで表示するCardエンティティのインスタンス。
-	 * @VParam photoCheck		表示されている名刺に名刺画像が紐付けられているかどうかのチェックフラグ。
-	 * @VParam caPho				名刺IDを写真のIDを紐付けるca_phoエンティティのインスタンス。
-	 * @VParam photo				紐付けられている名刺画像のID。
-	 * @VParam filePath			HTMLページで画像を表示するためのファイルパス。
-	 * 											画像は/src/main/resources/static/photo/の下にある。
+	 * @VParam card 詳細ページで表示するCardエンティティのインスタンス。
+	 * @VParam photoCheck 表示されている名刺に名刺画像が紐付けられているかどうかのチェックフラグ。
+	 * @VParam caPho 名刺IDを写真のIDを紐付けるca_phoエンティティのインスタンス。
+	 * @VParam photo 紐付けられている名刺画像のID。
+	 * @VParam filePath HTMLページで画像を表示するためのファイルパス。
+	 *         画像は/src/main/resources/static/photo/の下にある。
 	 */
 	@GetMapping("/Card_detail")
-	public ModelAndView detailOfCard(@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView detailOfCard(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		Card card = cardService.findById(id).orElse(null);
 		mav.addObject("detailData", card);
@@ -1084,15 +1085,15 @@ public class EmployeeManageController {
 	 * 		/Card_detailからGETでアクセスした際に実行される。
 	 * 		登録された名刺の情報を編集するためのフォームの出力。
 	 *
-	 * @APparam id						/Card_detailからGETパラメータで渡された名刺ID。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @APparam id /Card_detailからGETパラメータで渡された名刺ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam card						編集する元のデータのインスタンス。
-	 * @VParam companyDataList	名刺と企業を紐付けするための企業一覧のリスト。
+	 * @VParam card 編集する元のデータのインスタンス。
+	 * @VParam companyDataList 名刺と企業を紐付けするための企業一覧のリスト。
 	 */
 	@GetMapping("/Card_Update")
 	public ModelAndView formToUpdateCard(@RequestParam("id") int id,
-				ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("Card_Update");
 
@@ -1111,18 +1112,19 @@ public class EmployeeManageController {
 	 * 		選択・記入された内容でCardエンティティを更新するメソッド。
 	 * 		更新したあとは/Card_detailにリダイレクトする。
 	 *
-	 * @AParam card						選択・入力された内容をもつCardエンティティのインスタンス。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam card 選択・入力された内容をもつCardエンティティのインスタンス。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam companyId			更新したインスタンスが持つ企業のID。
-	 * @VParam company				/Card_detailで参照する当該名刺が所属する企業情報のインスタンス。
+	 * @VParam companyId 更新したインスタンスが持つ企業のID。
+	 * @VParam company /Card_detailで参照する当該名刺が所属する企業情報のインスタンス。
 	 */
 	@PostMapping("/Card_Update")
 	public ModelAndView updateCard(@Valid @ModelAttribute Card card,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Card_Update");
 			Card cardData = cardService.findById(card.getId()).orElse(null);
 			mav.addObject("detailData", cardData);
@@ -1145,14 +1147,14 @@ public class EmployeeManageController {
 	 * 		/Card_detailからGETでアクセスした際に実行される。
 	 * 		名刺に紐付けするための写真をアップロードするためのフォームの出力。
 	 *
-	 * @AParam id						/Card_detailからGETパラメータで渡された名刺ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id /Card_detailからGETパラメータで渡された名刺ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam card					アップロードする写真と紐付ける名刺の情報を持ったインスタンス。
+	 * @VParam card アップロードする写真と紐付ける名刺の情報を持ったインスタンス。
 	 */
 	@GetMapping("/Photo_Add")
 	public ModelAndView formToAddPhoto(@RequestParam("id") int id,
-					ModelAndView mav) {
+			ModelAndView mav) {
 
 		mav.setViewName("Photo_Add");
 
@@ -1165,25 +1167,24 @@ public class EmployeeManageController {
 	/**
 	 * addPhotoメソッド
 	 * 		/Photo_AddからPOSTでアクセスした際に実行される。
-	 * 		①選択された画像をアップロード(/src/main/resources/static/photo/に保存)し、
-	 * 		②アップロードされた画像の情報をPhotoテーブルに挿入し、
-	 * 		③名刺と紐付けるためにca_phoテーブルにも情報を挿入する。
+	 * 		①選択された画像をアップロード(/src/main/resources/static/img/に保存)し、
+	 * 		②アップロードされた画像の情報をPhotoテーブルに挿入し、 ③名刺と紐付けるためにca_phoテーブルにも情報を挿入する。
 	 *
-	 * @AParam file					POSTで送られたファイルが格納されているオブジェクト。
-	 * @AParam id						/Photo_Addからhidden属性で送られた名刺ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam file POSTで送られたファイルが格納されているオブジェクト。
+	 * @AParam id /Photo_Addからhidden属性で送られた名刺ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam photo				アップロードした画像ファイルの名前をカラムとして持つエンティティ。
-	 * @VParam fileName			アップロードした画像ファイルの名前。
-	 * @VParam savePhoto		保存した画像ファイルの情報を持つインスタンス。
-	 * @VParam uploadfile			画像をアップロードする場所を絶対パスで示したPath型のオブジェクト。
-	 * @VParam bytes				OutputStream#writeメソッドでフォルダを保存するためにbyte型に変換したオブジェクト。
+	 * @VParam photo アップロードした画像ファイルの名前をカラムとして持つエンティティ。
+	 * @VParam fileName アップロードした画像ファイルの名前。
+	 * @VParam savePhoto 保存した画像ファイルの情報を持つインスタンス。
+	 * @VParam uploadfile 画像をアップロードする場所を絶対パスで示したPath型のオブジェクト。
+	 * @VParam bytes OutputStream#writeメソッドでフォルダを保存するためにbyte型に変換したオブジェクト。
 	 *
 	 */
 	@PostMapping("/Photo_Add")
-	public ModelAndView addPhoto(
-			@RequestParam("upload_file") MultipartFile file,
-			@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView addPhoto(@RequestParam("upload_file") MultipartFile file,
+			@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		boolean photoCheck = false;
 
@@ -1192,7 +1193,6 @@ public class EmployeeManageController {
 		if (!(file.getSize() > 0)) {
 
 			mav.setViewName("Photo_Add");
-
 			mav.addObject("cardData", card);
 		} else {
 
@@ -1212,8 +1212,7 @@ public class EmployeeManageController {
 
 			Path uploadfile = Paths.get(PHOTO_DIRECTORY + fileName);
 
-			try (OutputStream os = Files.newOutputStream(uploadfile,
-						StandardOpenOption.CREATE)) {
+			try (OutputStream os = Files.newOutputStream(uploadfile, StandardOpenOption.CREATE)) {
 
 				byte[] bytes = file.getBytes();
 				os.write(bytes);
@@ -1239,9 +1238,9 @@ public class EmployeeManageController {
 	 * 		Productテーブルの内容を一覧にして表示するページの出力。
 	 * 		各実績名がそれぞれの詳細ページへのリンクになっている。
 	 *
-	 * @return ModelAndView				最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam productDataList		Productテーブルを全件検索した結果のエンティティリスト。
+	 * @VParam productDataList Productテーブルを全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/Product_List")
 	public ModelAndView showProductList(ModelAndView mav) {
@@ -1259,11 +1258,11 @@ public class EmployeeManageController {
 	 * 		/Product_Listから/Product_AddへGETでアクセスした際に実行される。
 	 * 		実績を新規に登録するページの出力。
 	 *
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 */
 	@GetMapping("/Product_Add")
 	public ModelAndView formToAddProduct(@ModelAttribute Product product,
-				ModelAndView mav) {
+			ModelAndView mav) {
 
 		return mav;
 	}
@@ -1274,17 +1273,18 @@ public class EmployeeManageController {
 	 * 		入力された情報を1エンティティとしてProductテーブルに挿入する。
 	 * 		挿入後は/Product_Listへリダイレクトする。
 	 *
-	 * @AParam product					/Product_Addに入力された情報をエンティティとして取得した内容。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam product /Product_Addに入力された情報をエンティティとして取得した内容。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam productDataList	Productテーブルから全件検索した結果のエンティティリスト。
+	 * @VParam productDataList Productテーブルから全件検索した結果のエンティティリスト。
 	 */
 	@PostMapping("/Product_Add")
 	public ModelAndView addProduct(@Valid @ModelAttribute Product product,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Product_Add");
 			mav.addObject("product", product);
 			return mav;
@@ -1305,13 +1305,14 @@ public class EmployeeManageController {
 	 * 		/Product_ListからGETでアクセスした際に実行される。
 	 * 		GETパラメータで渡された実績IDを持つ実績の詳細情報を表示するページの出力。
 	 *
-	 * @AParam id						GETパラメータで渡された実績ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id GETパラメータで渡された実績ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam product				GETで渡された実績IDを持つProductのエンティティ。
+	 * @VParam product GETで渡された実績IDを持つProductのエンティティ。
 	 */
 	@GetMapping("/Product_detail")
-	public ModelAndView detailOfProduct(@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView detailOfProduct(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		Product product = productService.findById(id).orElse(null);
 		mav.addObject("detailData", product);
@@ -1326,13 +1327,14 @@ public class EmployeeManageController {
 	 * 		/Product_detailからGETでアクセスした際に実行される。
 	 * 		既に登録された実績の編集を行うためのフォームを出力する。
 	 *
-	 * @AParam id						GETパラメータで渡された実績ID。
-	 * @return ModelAndView		最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam id GETパラメータで渡された実績ID。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam product				編集を行う実績エンティティ。
+	 * @VParam product 編集を行う実績エンティティ。
 	 */
 	@GetMapping("/Product_Update")
-	public ModelAndView formToUpdateProduct(@RequestParam("id") int id, ModelAndView mav) {
+	public ModelAndView formToUpdateProduct(@RequestParam("id") int id,
+			ModelAndView mav) {
 
 		mav.setViewName("Product_Update");
 
@@ -1348,15 +1350,16 @@ public class EmployeeManageController {
 	 * 		/Product_UpdateからPOSTでアクセスした際に実行される。
 	 * 		フォームに入力された情報を更新するメソッド。
 	 *
-	 * @AParam product					/Product_Updateのフォームで入力された情報を持つProductエンティティ。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @AParam product /Product_Updateのフォームで入力された情報を持つProductエンティティ。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 */
 	@PostMapping("/Product_Update")
 	public ModelAndView updataProduct(@Valid @ModelAttribute Product product,
-				BindingResult result,
-				ModelAndView mav) {
+			BindingResult result,
+			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Product_Update");
 			Product productData = productService.findById(product.getId()).orElse(null);
 			mav.addObject("detailData", productData);
@@ -1378,9 +1381,9 @@ public class EmployeeManageController {
 	 * 		/Skill_ListにGETでアクセスした際に実行される。
 	 * 		従業員の習得スキル、各企業で主に用いられるスキル、各実績で用いられたスキルを一覧で表示するページ。
 	 *
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam languageDataList	Languageテーブルを全件検索した結果のエンティティリスト。
+	 * @VParam languageDataList Languageテーブルを全件検索した結果のエンティティリスト。
 	 */
 	@GetMapping("/Skill_List")
 	public ModelAndView showSkillList(@ModelAttribute Language language,
@@ -1400,10 +1403,10 @@ public class EmployeeManageController {
 	 * 		入力されたスキル名をLanguageテーブルに1エンティティとして挿入する。
 	 * 		挿入後は/Skill_ListにGETでリダイレクトする。
 	 *
-	 * @param name						テキストフォームに入力されたスキル名をエンティティとして取得した内容。
-	 * @return ModelAndView			最終的に表示するページの情報をModelAndView形式で返す。
+	 * @param name テキストフォームに入力されたスキル名をエンティティとして取得した内容。
+	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
-	 * @VParam	languageDataList	Languageテーブルを全件検索した結果のエンティティリスト。
+	 * @VParam languageDataList Languageテーブルを全件検索した結果のエンティティリスト。
 	 */
 	@PostMapping("/Skill_List")
 	public ModelAndView addSkill(@Valid @ModelAttribute Language language,
