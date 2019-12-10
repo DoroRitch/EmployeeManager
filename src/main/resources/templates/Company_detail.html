@@ -64,7 +64,7 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
+			<tr th:if = "${dispatchedList.size()}">
 				<th class = "text-center align-middle">常駐社員</th>
 				<td>
 					<div th:each= "employee : ${dispatchedList}" th:object = "${employee}" class = "list-group">
