@@ -97,6 +97,7 @@ public class EmployeeManageController {
 
 	@PostConstruct
 	public void init() {
+		employeeService.setEntityManager(entityManager);
 		languageService.setEntityManager(entityManager);
 		empLangService.setEntityManager(entityManager);
 		empProdService.setEntityManager(entityManager);
@@ -211,6 +212,7 @@ public class EmployeeManageController {
 	 * @VParam skillStr スキル名を","区切りで整形した文字列。
 	 * @VParam coProdList 当該企業が関わった実績IDのリスト。
 	 * @VParam productList 実績エンティティのリスト。
+	 * @VParam dispatchedList 当該企業に派遣されている社員のリスト
 	 */
 	public void companyDetail(int comId, ModelAndView mav) {
 
@@ -242,6 +244,10 @@ public class EmployeeManageController {
 			}
 		}
 		mav.addObject("productList", productList);
+
+		List<Employee> dispatchedList = employeeService.dispatchedEmployee(comId);
+
+		mav.addObject("dispatchedList", dispatchedList);
 	}
 
 	/**
