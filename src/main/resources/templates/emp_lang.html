@@ -29,8 +29,8 @@
 				<td>
 					<div th:each = "skill : ${dataList}" class = "form-check form-check-inline h5">
 						<input type = "checkbox" name = "langId" class = "form-check-input"
-							th:checked = "${langList.contains(skill.id)}" th:value = ${skill.id}>
-							<label class = "form-check-label">[[${skill.name}]]</label>
+							th:checked = "${langList.contains(skill.id)}" th:id = ${skill.name} th:value = ${skill.id}>
+							<label class = "form-check-label" th:for = ${skill.name}>[[${skill.name}]]</label>
 					</div>
 				</td>
 			</tr>
