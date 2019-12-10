@@ -64,6 +64,17 @@
 					</div>
 				</td>
 			</tr>
+			<tr th:if = "${dispatchedList.size()}">
+				<th class = "text-center align-middle">常駐社員</th>
+				<td>
+					<div th:each= "employee : ${dispatchedList}" th:object = "${employee}" class = "list-group">
+						<a href = "/Employee_detail" class = "list-group-item list-group-item-action"
+							th:href = "@{/Employee_detail (id = *{id})}" th:text = "*{name}">
+								Employee
+							</a>
+					</div>
+				</td>
+			</tr>
 		</div>
 	</table>
 	</div>

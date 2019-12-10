@@ -97,6 +97,7 @@ public class EmployeeManageController {
 
 	@PostConstruct
 	public void init() {
+		employeeService.setEntityManager(entityManager);
 		languageService.setEntityManager(entityManager);
 		empLangService.setEntityManager(entityManager);
 		empProdService.setEntityManager(entityManager);
@@ -120,6 +121,7 @@ public class EmployeeManageController {
 	 * @VParam empProdList emp_prodテーブルに記録されている従業員が関与した実績のリスト。
 	 * @VParam prodList 従業員が関与した実績のリスト。
 	 */
+
 	public void employeeDetail(Integer id, Employee employee, boolean residentCheck,
 			ModelAndView mav) {
 
@@ -144,6 +146,7 @@ public class EmployeeManageController {
 		String langStr = "";
 
 		for (EmpLang laId : empLangList) {
+
 			String lang = languageService.findById(laId.getLangId()).orElse(null).getName();
 			langStr = langStr + lang + ", ";
 		}
@@ -196,8 +199,12 @@ public class EmployeeManageController {
 	}
 
 	/**
-	 * companyDetailメソッド Company_detail.htmlを開く事が多い上に、必要な処理が多いため、メソッドとして分離した。
-	 * 引数としてcompany_idを受け取り、詳細ページに表示する情報を各テーブルから検索する。
+	 * <<<<<<< HEAD companyDetailメソッド
+	 * Company_detail.htmlを開く事が多い上に、必要な処理が多いため、メソッドとして分離した。
+	 * 引数としてcompany_idを受け取り、詳細ページに表示する情報を各テーブルから検索する。 ======= companyDetailメソッド
+	 * Company_detail.htmlを開く事が多い上に、必要な処理が多いため、メソッドとして分離した。
+	 * 引数としてcompany_idを受け取り、詳細ページに表示する情報を各テーブルから検索する。 >>>>>>> branch 'master' of
+	 * https://github.com/DoroRitch/EmployeeManager.git
 	 *
 	 * @AParam comId 企業ID。
 	 *
@@ -205,7 +212,9 @@ public class EmployeeManageController {
 	 * @VParam useSkill 当該企業でよく用いられるスキルIDのリスト。
 	 * @VParam skillStr スキル名を","区切りで整形した文字列。
 	 * @VParam coProdList 当該企業が関わった実績IDのリスト。
-	 * @VParam productList 実績エンティティのリスト。
+	 * @VParam productList 実績エンティティのリスト。 <<<<<<< HEAD =======
+	 * @VParam dispatchedList 当該企業に派遣されている社員のリスト >>>>>>> branch 'master' of
+	 *         https://github.com/DoroRitch/EmployeeManager.git
 	 */
 	public void companyDetail(int comId, ModelAndView mav) {
 
@@ -237,6 +246,10 @@ public class EmployeeManageController {
 			}
 		}
 		mav.addObject("productList", productList);
+
+		List<Employee> dispatchedList = employeeService.dispatchedEmployee(comId);
+
+		mav.addObject("dispatchedList", dispatchedList);
 	}
 
 	/**
@@ -261,12 +274,14 @@ public class EmployeeManageController {
 		List<Integer> empIdList = new ArrayList<>();
 
 		for (EmpProd obj : empProd) {
+
 			empIdList.add(obj.getEmpId());
 		}
 
 		List<Employee> empList = new ArrayList<>();
 
 		for (Integer empId : empIdList) {
+
 			empList.add(employeeService.findById(empId).orElse(null));
 		}
 		mav.addObject("empList", empList);
@@ -332,8 +347,11 @@ public class EmployeeManageController {
 	}
 
 	/**
-	 * addEmployeeメソッド /Employee_AddからPOSTでアクセスした際に実行される。
+	 * <<<<<<< HEAD addEmployeeメソッド /Employee_AddからPOSTでアクセスした際に実行される。
 	 * フォームに入力・選択された情報をEmployeeテーブルに1エンティティとして挿入する。 挿入した後は、/Employee_Listにリダイレクトする。
+	 * ======= addEmployeeメソッド /Employee_AddからPOSTでアクセスした際に実行される。
+	 * フォームに入力・選択された情報をEmployeeテーブルに1エンティティとして挿入する。 挿入した後は、/Employee_Listにリダイレクトする。
+	 * >>>>>>> branch 'master' of https://github.com/DoroRitch/EmployeeManager.git
 	 *
 	 * @AParam employee /Employee_Addのフォームに入力した情報をエンティティとして取得した内容。
 	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
@@ -390,9 +408,12 @@ public class EmployeeManageController {
 	}
 
 	/**
-	 * formToUpdateEmployeeメソッド
+	 * formToUpdateEmployeeメソッド <<<<<<< HEAD
 	 * /Employee_detailから/Employee_UpdateにGETでアクセスした際に実行される。
-	 * 従業員情報を編集するために情報を入力・選択するフォームページの出力。
+	 * 従業員情報を編集するために情報を入力・選択するフォームページの出力。 =======
+	 * /Employee_detailから/Employee_UpdateにGETでアクセスした際に実行される。
+	 * 従業員情報を編集するために情報を入力・選択するフォームページの出力。 >>>>>>> branch 'master' of
+	 * https://github.com/DoroRitch/EmployeeManager.git
 	 *
 	 * @AParam id GETパラメータで渡された従業員ID。
 	 * @return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
@@ -493,6 +514,7 @@ public class EmployeeManageController {
 		List<Integer> langId = new ArrayList<>();
 
 		for (EmpLang obj : empLang) {
+
 			langId.add(obj.getLangId());
 		}
 		mav.addObject("langList", langId);
@@ -570,12 +592,21 @@ public class EmployeeManageController {
 	}
 
 	/**
-	 * formToConnectProductWithEmployeeメソッド 従業員が関与した実績を編集するページの出力。
+	 * <<<<<<< HEAD formToConnectProductWithEmployeeメソッド 従業員が関与した実績を編集するページの出力。
 	 * /Employee_detailからGETパラメータで従業員IDをもらう。
 	 * 
 	 * @AParam id GETパラメータで渡された従業員ID。
+	 * @return@return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。 =======
+	 *                formToConnectProductWithEmployeeメソッド 従業員が関与した実績を編集するページの出力。
+	 *                /Employee_detailからGETパラメータで従業員IDをもらう。 >>>>>>> branch 'master'
+	 *                of https://github.com/DoroRitch/EmployeeManager.git
+	 *
+	 *                <<<<<<< HEAD =======
+	 * @AParam id GETパラメータで渡された従業員ID。
 	 * @return@return ModelAndView 最終的に表示するページの情報をModelAndView形式で返す。
 	 *
+	 *                >>>>>>> branch 'master' of
+	 *                https://github.com/DoroRitch/EmployeeManager.git
 	 * @VParam empProd 従業員が関与した実績のリスト。
 	 * @VParam prodId 実績IDを格納したリスト。
 	 * @VParam productList formの中で選択肢に使う全実績のリスト
@@ -633,6 +664,7 @@ public class EmployeeManageController {
 		EmpProd hasProd = empProdService.findByEmpIdAndProdId(empId, prodId);
 
 		if (hasProd != null) {
+
 			addEmpProd.setId(hasProd.getId());
 		}
 
@@ -704,6 +736,7 @@ public class EmployeeManageController {
 			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Company_Add");
 			mav.addObject("company", company);
 			return mav;
@@ -773,6 +806,7 @@ public class EmployeeManageController {
 			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Company_Update");
 			mav.addObject("company", company);
 			Company companyData = companyService.findById(company.getId()).orElse(null);
@@ -1061,6 +1095,7 @@ public class EmployeeManageController {
 			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Card_Update");
 			Card cardData = cardService.findById(card.getId()).orElse(null);
 			mav.addObject("detailData", cardData);
@@ -1125,7 +1160,6 @@ public class EmployeeManageController {
 		if (!(file.getSize() > 0)) {
 
 			mav.setViewName("Photo_Add");
-
 			mav.addObject("cardData", card);
 		} else {
 
@@ -1211,6 +1245,7 @@ public class EmployeeManageController {
 			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Product_Add");
 			mav.addObject("product", product);
 			return mav;
@@ -1278,6 +1313,7 @@ public class EmployeeManageController {
 			ModelAndView mav) {
 
 		if (result.hasErrors()) {
+
 			mav.setViewName("Product_Update");
 			Product productData = productService.findById(product.getId()).orElse(null);
 			mav.addObject("detailData", productData);
